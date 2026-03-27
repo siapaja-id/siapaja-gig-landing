@@ -67,8 +67,15 @@ export const content = {
     tagline: "Power to the people",
   },
 
+  // ── Site ──
+  site: {
+    title: "Co-op Platform",
+    favicon: "/favicon.svg",
+  },
+
   // ── Images ──
   images: {
     heroBackground: "/siapaja-hero.jpg",
+    heroBackgroundMobile: "/siapaja-hero-9_16.jpeg",
   },
 } as const;

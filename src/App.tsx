@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Users, Star, ArrowRight, FileText, Shield, MessageCircle, Menu, Github } from 'lucide-react';
+import { Users, Star, ArrowRight, FileText, Shield, MessageCircle, Github } from 'lucide-react';
 import { content } from './content';
 
 export default function App() {
@@ -16,9 +16,16 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const img = new Image();
-    img.src = content.images.heroBackground;
-    img.onload = () => setBgLoaded(true);
+    let loaded = 0;
+    const onLoad = () => { if (++loaded >= 2) setBgLoaded(true); };
+    const img1 = new Image(); img1.src = content.images.heroBackground; img1.onload = onLoad;
+    const img2 = new Image(); img2.src = content.images.heroBackgroundMobile; img2.onload = onLoad;
+  }, []);
+
+  useEffect(() => {
+    document.title = content.site.title;
+    const link = document.querySelector("link[rel~='icon']") as HTMLLinkElement | null;
+    if (link) link.href = content.site.favicon;
   }, []);
 
   return (
@@ -26,9 +33,18 @@ export default function App() {
 
       {/* Fixed Background Image (stays pinned behind hero + feature cards) */}
       <div
-        className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat pointer-events-none"
+        className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat pointer-events-none hidden md:block"
         style={{
           backgroundImage: `url('${content.images.heroBackground}')`,
+          opacity: bgLoaded ? 1 : 0,
+          transform: bgLoaded ? 'scale(1)' : 'scale(1.1)',
+          transition: 'opacity 1.5s ease-out, transform 1.5s ease-out',
+        }}
+      />
+      <div
+        className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat pointer-events-none md:hidden"
+        style={{
+          backgroundImage: `url('${content.images.heroBackgroundMobile}')`,
           opacity: bgLoaded ? 1 : 0,
           transform: bgLoaded ? 'scale(1)' : 'scale(1.1)',
           transition: 'opacity 1.5s ease-out, transform 1.5s ease-out',
@@ -38,15 +54,15 @@ export default function App() {
       
       {/* 1. Amazing Header */}
       <motion.header 
-        className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'pt-2 md:pt-4 pb-2 px-2 sm:px-6 lg:px-8' : 'px-4 sm:px-6 lg:px-8 py-6'}`}
+        className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'pt-2 md:pt-4 pb-2 px-2 md:px-6 lg:px-8' : 'px-2 md:px-6 lg:px-8 py-4 md:py-6'}`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className={`max-w-7xl mx-auto flex justify-between items-center bg-[#1a0b0b]/85 backdrop-blur-xl border border-[#4a2f25] shadow-[0_8px_30px_rgb(0,0,0,0.5)] transition-all duration-500 ${scrolled ? 'rounded-full px-6 py-3' : 'rounded-2xl px-6 py-4'}`}>
-          <div className="flex items-center gap-2 text-[#f3d399]">
-            <Star className="w-6 h-6 fill-current" />
-            <span className="font-bold text-xl tracking-wide uppercase">{content.header.brand}</span>
+        <div className={`max-w-7xl mx-auto flex justify-between items-center bg-[#1a0b0b]/85 backdrop-blur-xl border border-[#4a2f25] shadow-[0_8px_30px_rgb(0,0,0,0.5)] transition-all duration-500 ${scrolled ? 'rounded-full px-3 py-2 md:px-6 md:py-3' : 'rounded-2xl px-3 py-2.5 md:px-6 md:py-4'}`}>
+          <div className="flex items-center gap-1.5 md:gap-2 text-[#f3d399]">
+            <Star className="w-4 h-4 md:w-6 md:h-6 fill-current" />
+            <span className="font-bold text-sm md:text-xl tracking-wide uppercase">{content.header.brand}</span>
           </div>
           
           <nav className="hidden md:flex gap-8 text-sm font-medium text-[#c2b2a4]">
@@ -55,17 +71,15 @@ export default function App() {
             ))}
           </nav>
           
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 md:gap-4">
             <a href={content.header.githubUrl} target="_blank" rel="noopener noreferrer" className="text-[#c2b2a4] hover:text-[#f3d399] transition-colors flex items-center justify-center">
-              <Github className="w-5 h-5" />
+              <Github className="w-4 h-4 md:w-5 md:h-5" />
             </a>
             <a href={content.header.loginUrl} className="hidden md:block text-sm font-medium text-[#f3d399] hover:text-white transition-colors">{content.header.loginText}</a>
-            <a href={content.header.joinUrl} className="bg-[#f3d399] text-[#1a0b0b] px-5 py-2 rounded-full text-sm font-bold hover:bg-[#e2c288] transition-colors shadow-[0_0_15px_rgba(243,211,153,0.2)] hover:shadow-[0_0_25px_rgba(243,211,153,0.4)]">
+            <a href={content.header.joinUrl} className="bg-[#f3d399] text-[#1a0b0b] px-3 py-1.5 md:px-5 md:py-2 rounded-full text-xs md:text-sm font-bold hover:bg-[#e2c288] transition-colors shadow-[0_0_15px_rgba(243,211,153,0.2)] hover:shadow-[0_0_25px_rgba(243,211,153,0.4)]">
               {content.header.joinText}
             </a>
-            <button className="md:hidden text-[#f3d399]">
-              <Menu className="w-6 h-6" />
-            </button>
+
           </div>
         </div>
       </motion.header>
@@ -85,12 +99,14 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           {/* 3. Smaller Hero Title, Desc, and Buttons */}
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center max-w-3xl mx-auto mb-16 md:mb-20"
-          >
+          <div className="relative text-center max-w-3xl mx-auto mb-16 md:mb-20">
+            <div className="absolute inset-0 -inset-x-16 md:-inset-x-8 -inset-y-8 bg-gradient-to-b from-transparent via-[#0a0505]/60 to-transparent md:bg-transparent rounded-3xl pointer-events-none" />
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="relative"
+            >
             {/* 6. Consistent Border Radius (rounded-2xl) */}
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-2xl bg-[#1a0b0b]/60 border border-[#f3d399]/30 text-[#f3d399] text-xs font-bold tracking-wider uppercase mb-6 backdrop-blur-sm shadow-lg">
               <Star className="w-3 h-3 fill-current" />
@@ -109,7 +125,7 @@ export default function App() {
               {content.hero.description}
             </p>
             
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
               <a href={content.hero.ctaPrimaryUrl} className="bg-[#f3d399] text-[#1a0b0b] px-5 py-2.5 rounded-2xl font-bold text-sm hover:bg-[#e2c288] transition-all shadow-[0_0_20px_rgba(243,211,153,0.2)] hover:shadow-[0_0_30px_rgba(243,211,153,0.4)] flex items-center justify-center gap-2 hover:-translate-y-0.5">
                 {content.hero.ctaPrimary} <ArrowRight className="w-4 h-4" />
               </a>
@@ -118,6 +134,7 @@ export default function App() {
               </a>
             </div>
           </motion.div>
+          </div>
 
           {/* 2. Smaller Phones & Better Composition */}
           <div className="flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-10 max-w-6xl mx-auto">
