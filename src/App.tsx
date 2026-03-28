@@ -75,7 +75,6 @@ export default function App() {
             <a href={content.header.githubUrl} target="_blank" rel="noopener noreferrer" className="text-[#c2b2a4] hover:text-[#f3d399] transition-colors flex items-center justify-center">
               <Github className="w-4 h-4 md:w-5 md:h-5" />
             </a>
-            <a href={content.header.loginUrl} className="hidden md:block text-sm font-medium text-[#f3d399] hover:text-white transition-colors">{content.header.loginText}</a>
             <a href={content.header.joinUrl} className="bg-[#f3d399] text-[#1a0b0b] px-3 py-1.5 md:px-5 md:py-2 rounded-full text-xs md:text-sm font-bold hover:bg-[#e2c288] transition-colors shadow-[0_0_15px_rgba(243,211,153,0.2)] hover:shadow-[0_0_25px_rgba(243,211,153,0.4)]">
               {content.header.joinText}
             </a>
@@ -100,7 +99,7 @@ export default function App() {
           
           {/* 3. Smaller Hero Title, Desc, and Buttons */}
           <div className="relative text-center max-w-3xl mx-auto mb-16 md:mb-20">
-            <div className="absolute inset-0 -inset-x-16 md:-inset-x-8 -inset-y-8 bg-gradient-to-b from-transparent via-[#0a0505]/60 to-transparent md:bg-transparent rounded-3xl pointer-events-none" />
+            <div className="absolute inset-0 -inset-x-16 md:-inset-x-8 -inset-y-8 bg-[radial-gradient(ellipse_at_center,rgba(10,5,5,0.55)_0%,transparent_85%)] md:bg-transparent pointer-events-none" />
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -115,13 +114,13 @@ export default function App() {
             </div>
             
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight mb-4 leading-[1.15]">
-              {content.hero.headlineLine1} <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f3d399] via-[#f8e4be] to-[#c2b2a4]">
+              <span className="[text-shadow:0_1px_6px_rgba(0,0,0,0.5)] md:[text-shadow:none]">{content.hero.headlineLine1}</span> <br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f3d399] via-[#f8e4be] to-[#c2b2a4] [filter:drop-shadow(0_1px_6px_rgba(0,0,0,0.5))] md:[filter:none]">
                 {content.hero.headlineLine2}
               </span>
             </h1>
             
-            <p className="text-sm md:text-base text-[#c2b2a4] mb-8 font-medium max-w-2xl mx-auto leading-relaxed">
+            <p className="text-sm md:text-base text-[#c2b2a4] mb-8 font-medium max-w-2xl mx-auto leading-relaxed [text-shadow:0_1px_4px_rgba(0,0,0,0.5)] md:[text-shadow:none]">
               {content.hero.description}
             </p>
             
